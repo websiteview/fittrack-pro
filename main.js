@@ -1,24 +1,48 @@
-document.getElementById("goalBtn").addEventListener("click", () => {
+// ======================
+// CALORIE CALCULATOR
+// ======================
 
-  const weight = prompt("Enter your weight in pounds:");
+const goalBtn =
+  document.getElementById("goalBtn");
 
-  if (!weight) return;
+if(goalBtn){
 
-  const calories = Math.round(weight * 15);
+  goalBtn.addEventListener("click", () => {
 
-  alert(
-    `Estimated maintenance calories: ${calories} calories/day`
-  );
+    const weight =
+      prompt(
+        "Enter your weight in pounds:"
+      );
 
-});
+    if(!weight) return;
+
+    const calories =
+      Math.round(weight * 15);
+
+    alert(
+      `Estimated maintenance calories: ${calories} calories/day`
+    );
+
+  });
+
+}
+
+// ======================
+// PROFILE + DASHBOARD
+// ======================
 
 const profileForm =
   document.getElementById("profileForm");
 
 const dashboardContent =
-  document.getElementById("dashboardContent");
+  document.getElementById(
+    "dashboardContent"
+  );
 
-function calculateBMI(weight, height){
+function calculateBMI(
+  weight,
+  height
+){
 
   const weightKg =
     weight * 0.453592;
@@ -32,27 +56,6 @@ function calculateBMI(weight, height){
   ).toFixed(1);
 
 }
-
-profileForm.addEventListener("submit", (e) => {
-
-  e.preventDefault();
-
-  const user = {
-    name: document.getElementById("name").value,
-    age: document.getElementById("age").value,
-    weight: document.getElementById("weight").value,
-    height: document.getElementById("height").value,
-    goal: document.getElementById("goal").value
-  };
-
-  localStorage.setItem(
-    "fittrackUser",
-    JSON.stringify(user)
-  );
-
-  renderDashboard(user);
-
-});
 
 function renderDashboard(user){
 
@@ -78,9 +81,7 @@ Weight Loss Program
 • Drink More Water
 `;
 
-    }
-
-    else{
+    } else {
 
       recommendation = `
 Fat Reduction Program
@@ -110,9 +111,7 @@ Muscle Growth Program
 • Progressive Overload
 `;
 
-    }
-
-    else{
+    } else {
 
       recommendation = `
 Strength Program
@@ -146,9 +145,12 @@ Maintenance Program
     Math.round(user.weight * 15);
 
   dashboardContent.innerHTML = `
+
     <div class="dashboard-card">
 
-      <h3>Welcome ${user.name}</h3>
+      <h3>
+        Welcome ${user.name}
+      </h3>
 
       <p>
         <strong>Age:</strong>
@@ -187,89 +189,287 @@ Maintenance Program
       <pre>${recommendation}</pre>
 
     </div>
+
   `;
+
+}
+
+if(profileForm){
+
+  profileForm.addEventListener(
+    "submit",
+    (e) => {
+
+      e.preventDefault();
+
+      const user = {
+
+        name:
+          document.getElementById(
+            "name"
+          ).value,
+
+        age:
+          document.getElementById(
+            "age"
+          ).value,
+
+        weight:
+          document.getElementById(
+            "weight"
+          ).value,
+
+        height:
+          document.getElementById(
+            "height"
+          ).value,
+
+        goal:
+          document.getElementById(
+            "goal"
+          ).value
+
+      };
+
+      localStorage.setItem(
+        "fittrackUser",
+        JSON.stringify(user)
+      );
+
+      renderDashboard(user);
+
+    }
+  );
+
 }
 
 const savedUser =
   JSON.parse(
-    localStorage.getItem("fittrackUser")
+    localStorage.getItem(
+      "fittrackUser"
+    )
   );
 
 if(savedUser){
   renderDashboard(savedUser);
 }
 
+// ======================
+// EXERCISE EXPLORER
+// ======================
+
 const sampleExercises = [
 
   {
-    name: "Push Ups",
-    bodyPart: "Chest",
-    equipment: "Body Weight"
+    name:"Push Ups",
+    bodyPart:"Chest",
+    equipment:"Body Weight"
   },
 
   {
-    name: "Squats",
-    bodyPart: "Legs",
-    equipment: "Body Weight"
+    name:"Squats",
+    bodyPart:"Legs",
+    equipment:"Body Weight"
   },
 
   {
-    name: "Plank",
-    bodyPart: "Core",
-    equipment: "Body Weight"
+    name:"Plank",
+    bodyPart:"Core",
+    equipment:"Body Weight"
   },
 
   {
-    name: "Dumbbell Curl",
-    bodyPart: "Biceps",
-    equipment: "Dumbbell"
+    name:"Dumbbell Curl",
+    bodyPart:"Biceps",
+    equipment:"Dumbbell"
   },
 
   {
-    name: "Lunges",
-    bodyPart: "Legs",
-    equipment: "Body Weight"
+    name:"Lunges",
+    bodyPart:"Legs",
+    equipment:"Body Weight"
   },
 
   {
-    name: "Shoulder Press",
-    bodyPart: "Shoulders",
-    equipment: "Dumbbell"
+    name:"Shoulder Press",
+    bodyPart:"Shoulders",
+    equipment:"Dumbbell"
   }
 
 ];
 
-document
-.getElementById("loadExercises")
-.addEventListener("click", () => {
+const loadExercisesBtn =
+  document.getElementById(
+    "loadExercises"
+  );
 
-  const container =
-    document.getElementById(
-      "exerciseContainer"
-    );
+if(loadExercisesBtn){
 
-  container.innerHTML = "";
+  loadExercisesBtn.addEventListener(
+    "click",
+    () => {
 
-  sampleExercises.forEach(exercise => {
+      const container =
+        document.getElementById(
+          "exerciseContainer"
+        );
 
-    container.innerHTML += `
-      <div class="card">
+      container.innerHTML = "";
 
-        <h3>${exercise.name}</h3>
+      sampleExercises.forEach(
+        exercise => {
+
+          container.innerHTML += `
+
+            <div class="card">
+
+              <h3>
+                ${exercise.name}
+              </h3>
+
+              <p>
+                <strong>Body Part:</strong>
+                ${exercise.bodyPart}
+              </p>
+
+              <p>
+                <strong>Equipment:</strong>
+                ${exercise.equipment}
+              </p>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+    }
+  );
+
+}
+
+// ======================
+// CLOSE EXERCISES
+// ======================
+
+const closeExercisesBtn =
+  document.getElementById(
+    "closeExercises"
+  );
+
+if(closeExercisesBtn){
+
+  closeExercisesBtn.addEventListener(
+    "click",
+    () => {
+
+      const container =
+        document.getElementById(
+          "exerciseContainer"
+        );
+
+      container.innerHTML = `
+        <p>
+          Exercises hidden.
+        </p>
+      `;
+
+    }
+  );
+
+}
+
+// ======================
+// MEAL PLANNER API
+// ======================
+
+const mealBtn =
+  document.getElementById(
+    "mealBtn"
+  );
+
+const mealContainer =
+  document.getElementById(
+    "mealContainer"
+  );
+
+if(mealBtn){
+
+  mealBtn.addEventListener(
+    "click",
+    loadMeal
+  );
+
+}
+
+async function loadMeal(){
+
+  mealContainer.innerHTML =
+    "<p>Loading meal...</p>";
+
+  try{
+
+    const response =
+      await fetch(
+        "https://www.themealdb.com/api/json/v1/1/random.php"
+      );
+
+    const data =
+      await response.json();
+
+    const meal =
+      data.meals[0];
+
+    mealContainer.innerHTML = `
+
+      <div class="meal-card">
+
+        <h3>
+          ${meal.strMeal}
+        </h3>
+
+        <img
+          src="${meal.strMealThumb}"
+          alt="${meal.strMeal}"
+        >
 
         <p>
-          <strong>Body Part:</strong>
-          ${exercise.bodyPart}
+          <strong>Category:</strong>
+          ${meal.strCategory}
         </p>
 
         <p>
-          <strong>Equipment:</strong>
-          ${exercise.equipment}
+          <strong>Origin:</strong>
+          ${meal.strArea}
+        </p>
+
+        <p>
+          <strong>Instructions:</strong>
+          ${meal.strInstructions.substring(
+            0,
+            300
+          )}...
         </p>
 
       </div>
+
     `;
 
-  });
+  }
 
-});
+  catch(error){
+
+    mealContainer.innerHTML = `
+
+      <p>
+        Unable to load meal data.
+      </p>
+
+    `;
+
+    console.error(error);
+
+  }
+
+}

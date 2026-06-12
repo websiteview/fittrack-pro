@@ -17,10 +17,12 @@
   <a href="#">Home</a>
   <a href="#profile">Profile</a>
   <a href="#dashboard">Dashboard</a>
+  <a href="#mealPlanner">Meals</a>
   <a href="#exercises">Exercises</a>
 </nav>
 
 <section class="hero">
+
   <h2>Achieve Your Fitness Goals</h2>
 
   <p>
@@ -28,7 +30,10 @@
     and progress tracking all in one place.
   </p>
 
-  <button id="goalBtn">Calculate Daily Calories</button>
+  <button id="goalBtn">
+    Calculate Daily Calories
+  </button>
+
 </section>
 
 <section id="profile" class="form-section">
@@ -95,8 +100,38 @@
 
   <div id="dashboardContent">
 
+  <div class="dashboard-card">
+
     <p>
-      Create a profile to see recommendations.
+      Create a profile to unlock your personalized
+      fitness recommendations, calorie targets,
+      and workout plans.
+    </p>
+
+  </div>
+
+</div>
+
+</section>
+
+<section id="mealPlanner" class="meal-section">
+
+  <h2 class="section-title">
+    Healthy Meal Generator
+  </h2>
+
+  <p class="section-description">
+    Discover healthy meals and recipes powered by TheMealDB API.
+  </p>
+
+  <button id="mealBtn" class="action-btn">
+    Generate Meal
+  </button>
+
+  <div id="mealContainer">
+
+    <p>
+      Click the button to get a healthy meal suggestion.
     </p>
 
   </div>
@@ -109,22 +144,41 @@
     Exercise Explorer
   </h2>
 
+  <p class="section-description">
+    Explore workout exercises and training ideas.
+  </p>
+
   <div class="exercise-controls">
 
-    <button id="loadExercises">
+    <button
+      id="loadExercises"
+      class="action-btn"
+    >
       Load Sample Exercises
+    </button>
+
+    <button
+      id="closeExercises"
+      class="action-btn secondary-btn"
+    >
+      Close Exercises
     </button>
 
   </div>
 
-  <div id="exerciseContainer"
-       class="features">
-  </div>
+  <div
+    id="exerciseContainer"
+    class="features"
+  ></div>
 
 </section>
 
 <footer>
-  <p>FitTrack Pro - WDD 330 Final Project</p>
+
+  <p>
+    FitTrack Pro • WDD 330 Final Project
+  </p>
+
 </footer>
 
 <script src="main.js"></script>
