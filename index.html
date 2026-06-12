@@ -9,19 +9,20 @@
 <body>
 
 <header>
-  <h1> FitTrack Pro</h1>
+  <h1>FitTrack Pro</h1>
   <p>Your Fitness and Nutrition Companion</p>
 </header>
 
 <nav>
   <a href="#">Home</a>
-  <a href="#">Workouts</a>
-  <a href="#">Nutrition</a>
-  <a href="#">Dashboard</a>
+  <a href="#profile">Profile</a>
+  <a href="#dashboard">Dashboard</a>
+  <a href="#exercises">Exercises</a>
 </nav>
 
 <section class="hero">
   <h2>Achieve Your Fitness Goals</h2>
+
   <p>
     Personalized workouts, nutrition recommendations,
     and progress tracking all in one place.
@@ -30,41 +31,96 @@
   <button id="goalBtn">Calculate Daily Calories</button>
 </section>
 
-<section class="features">
+<section id="profile" class="form-section">
 
-  <div class="card">
-    <h3>User Profile</h3>
-    <p>Create and manage your fitness profile.</p>
-  </div>
+  <h2>Create Your Fitness Profile</h2>
 
-  <div class="card">
-    <h3>Exercise Search</h3>
-    <p>Browse exercises using ExerciseDB API.</p>
-  </div>
+  <form id="profileForm">
 
-  <div class="card">
-    <h3>Workout Planner</h3>
-    <p>Build custom workout routines.</p>
-  </div>
+    <input
+      type="text"
+      id="name"
+      placeholder="Name"
+      required
+    >
 
-  <div class="card">
-    <h3>Meal Planner</h3>
-    <p>Generate daily meal plans.</p>
-  </div>
+    <input
+      type="number"
+      id="age"
+      placeholder="Age"
+      required
+    >
 
-  <div class="card">
-    <h3>Progress Tracking</h3>
-    <p>Track weight, workouts and goals.</p>
-  </div>
+    <input
+      type="number"
+      id="weight"
+      placeholder="Weight (lbs)"
+      required
+    >
 
-  <div class="card">
-    <h3>Dashboard</h3>
-    <p>View your fitness statistics.</p>
+    <input
+      type="number"
+      id="height"
+      placeholder="Height (inches)"
+      required
+    >
+
+    <select id="goal">
+
+      <option value="lose">
+        Lose Weight
+      </option>
+
+      <option value="maintain">
+        Maintain Weight
+      </option>
+
+      <option value="gain">
+        Gain Muscle
+      </option>
+
+    </select>
+
+    <button type="submit">
+      Save Profile
+    </button>
+
+  </form>
+
+</section>
+
+<section id="dashboard" class="dashboard">
+
+  <h2>Your Dashboard</h2>
+
+  <div id="dashboardContent">
+
+    <p>
+      Create a profile to see recommendations.
+    </p>
+
   </div>
 
 </section>
 
+<section id="exercises" class="features">
 
+  <div class="card">
+    <h3>Push Ups</h3>
+    <p>Chest, shoulders and triceps.</p>
+  </div>
+
+  <div class="card">
+    <h3>Squats</h3>
+    <p>Leg strength and endurance.</p>
+  </div>
+
+  <div class="card">
+    <h3>Plank</h3>
+    <p>Core stability exercise.</p>
+  </div>
+
+</section>
 
 <footer>
   <p>FitTrack Pro - WDD 330 Final Project</p>
