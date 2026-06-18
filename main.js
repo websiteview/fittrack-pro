@@ -71,103 +71,295 @@ function renderDashboard(user) {
     Number(user.weight)
   );
 
+  /* ======================
+      BMI STATUS
+  ====================== */
+
+  let bmiStatus = "";
+  let progress = 50;
+
+  if (bmi < 18.5) {
+    bmiStatus = "Underweight";
+    progress = 25;
+  }
+
+  else if (bmi < 25) {
+    bmiStatus = "Healthy";
+    progress = 100;
+  }
+
+  else if (bmi < 30) {
+    bmiStatus = "Overweight";
+    progress = 65;
+  }
+
+  else {
+    bmiStatus = "Obese";
+    progress = 35;
+  }
+
+  /* ======================
+      GOAL NAME
+  ====================== */
+
+  let goalName = "";
+
+  switch (user.goal) {
+
+    case "lose_fat":
+      goalName = "Lose Fat";
+      break;
+
+    case "lose_light":
+      goalName = "Lose Weight";
+      break;
+
+    case "maintain":
+      goalName = "Maintain Weight";
+      break;
+
+    case "lean_gain":
+      goalName = "Lean Muscle Gain";
+      break;
+
+    case "bulk":
+      goalName = "Bulking";
+      break;
+
+    case "athletic":
+      goalName = "Athletic Performance";
+      break;
+
+    case "strength":
+      goalName = "Strength Training";
+      break;
+
+    default:
+      goalName = "General Fitness";
+  }
+
+  /* ======================
+      WORKOUT PLAN
+  ====================== */
+
   let recommendation = "";
 
   switch (user.goal) {
 
     case "lose_fat":
+
       recommendation = `
-Fat Loss Program
-• Cardio 4x week
-• Walking daily
-• High protein diet
-• Calorie deficit
-      `;
+Monday      • Cardio (45 min)
+
+Tuesday     • Full Body
+
+Wednesday   • HIIT
+
+Thursday    • Walking
+
+Friday      • Cardio
+
+Saturday    • Core Workout
+
+Sunday      • Recovery
+`;
+
       break;
 
     case "lose_light":
+
       recommendation = `
-Light Fat Loss
-• Walking
-• Yoga
-• Light cardio
-      `;
+Monday      • Walking
+
+Tuesday     • Yoga
+
+Wednesday   • Cycling
+
+Thursday    • Core
+
+Friday      • Jogging
+
+Saturday    • Stretching
+
+Sunday      • Rest
+`;
+
       break;
 
     case "maintain":
+
       recommendation = `
-Maintenance Program
-• Balanced training
-• Active lifestyle
-• Moderate diet
-      `;
+Monday      • Chest
+
+Tuesday     • Legs
+
+Wednesday   • Cardio
+
+Thursday    • Back
+
+Friday      • Shoulders
+
+Saturday    • Core
+
+Sunday      • Recovery
+`;
+
       break;
 
     case "lean_gain":
+
       recommendation = `
-Lean Muscle Program
-• Strength training
-• High protein diet
-• Progressive overload
-      `;
+Monday      • Chest
+
+Tuesday     • Back
+
+Wednesday   • Legs
+
+Thursday    • Arms
+
+Friday      • Shoulders
+
+Saturday    • Core
+
+Sunday      • Rest
+`;
+
       break;
 
     case "bulk":
+
       recommendation = `
-Bulking Program
-• Heavy lifting
-• High calorie intake
-• Compound lifts
-      `;
+Monday      • Heavy Chest
+
+Tuesday     • Heavy Legs
+
+Wednesday   • Heavy Back
+
+Thursday    • Arms
+
+Friday      • Shoulders
+
+Saturday    • Deadlifts
+
+Sunday      • Recovery
+`;
+
       break;
 
     case "athletic":
+
       recommendation = `
-Athletic Performance
-• Speed training
-• Agility drills
-• Endurance work
-      `;
+Monday      • Sprint Training
+
+Tuesday     • Agility
+
+Wednesday   • Plyometrics
+
+Thursday    • Endurance
+
+Friday      • Speed
+
+Saturday    • Mobility
+
+Sunday      • Recovery
+`;
+
       break;
 
     case "strength":
+
       recommendation = `
-Strength Program
-• Heavy lifts
-• Low reps
-• Power focus
-      `;
+Monday      • Squats
+
+Tuesday     • Bench Press
+
+Wednesday   • Deadlifts
+
+Thursday    • Pull Ups
+
+Friday      • Overhead Press
+
+Saturday    • Core
+
+Sunday      • Recovery
+`;
+
       break;
 
     default:
+
       recommendation = `
-General Fitness
-• Active lifestyle
-• Balanced training
-      `;
+General Activity
+
+30 minutes daily
+
+Stay active.
+`;
+
   }
 
   document.getElementById("dashboardContent").innerHTML = `
+
     <div class="dashboard-card">
 
-      <h3>Welcome ${user.name}</h3>
+      <h2>Welcome, ${user.name}</h2>
+
+      <hr>
 
       <p><strong>Age:</strong> ${user.age}</p>
+
       <p><strong>Weight:</strong> ${user.weight} lbs</p>
-      <p><strong>Height:</strong> ${user.height} inches</p>
-      <p><strong>Goal:</strong> ${user.goal}</p>
+
+      <p><strong>Height:</strong> ${user.height} in</p>
+
+      <p><strong>Goal:</strong> ${goalName}</p>
+
+      <br>
+
+      <h3>Health Summary</h3>
 
       <p><strong>BMI:</strong> ${bmi}</p>
 
-      <p><strong>Calories:</strong> ${Math.round(macros.calories)}</p>
-      <p><strong>Protein:</strong> ${Math.round(macros.protein)} g</p>
-      <p><strong>Carbs:</strong> ${Math.round(macros.carbs)} g</p>
-      <p><strong>Fat:</strong> ${Math.round(macros.fat)} g</p>
+      <p><strong>Status:</strong> ${bmiStatus}</p>
 
-      <p><strong>Workout Plan:</strong></p>
+      <div
+        style="
+          width:100%;
+          height:18px;
+          background:#E5E7EB;
+          border-radius:20px;
+          overflow:hidden;
+          margin:15px 0;
+      ">
+
+        <div
+          style="
+            width:${progress}%;
+            height:100%;
+            background:linear-gradient(90deg,#247A7A,#5B9A95);
+          ">
+        </div>
+
+      </div>
+
+      <h3>Daily Nutrition Target</h3>
+
+      <p>🔥 Calories: <strong>${Math.round(macros.calories)}</strong></p>
+
+      <p>🥩 Protein: <strong>${Math.round(macros.protein)} g</strong></p>
+
+      <p>🍚 Carbs: <strong>${Math.round(macros.carbs)} g</strong></p>
+
+      <p>🥑 Fat: <strong>${Math.round(macros.fat)} g</strong></p>
+
+      <br>
+
+      <h3>Weekly Workout Planner</h3>
+
       <pre>${recommendation}</pre>
 
     </div>
+
   `;
 }
 
