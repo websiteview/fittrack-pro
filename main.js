@@ -1,475 +1,272 @@
-// ======================
-// CALORIE CALCULATOR
-// ======================
+import { loadMeal } from "./controllers/mealController.js";
+import { saveUser, getUser } from "./utils/storage.js";
+import { calculateDailyMacros } from "./utils/macros.js";
+import { getExercisesByBodyPart } from "./services/exerciseService.js";
 
-const goalBtn =
-  document.getElementById("goalBtn");
+/* ======================
+   CALORIE BUTTON
+====================== */
+document.getElementById("goalBtn")
+?.addEventListener("click", () => {
 
-if(goalBtn){
+  const weight = prompt("Enter weight in lbs");
+  if (!weight) return;
 
-  goalBtn.addEventListener("click", () => {
+  const calories = Math.round(weight * 15);
 
-    const weight =
-      prompt(
-        "Enter your weight in pounds:"
-      );
+  alert(`Estimated maintenance calories: ${calories} calories/day`);
+});
 
-    if(!weight) return;
 
-    const calories =
-      Math.round(weight * 15);
+/* ======================
+   PROFILE FORM
+====================== */
+document.getElementById("profileForm")
+?.addEventListener("submit", (e) => {
 
-    alert(
-      `Estimated maintenance calories: ${calories} calories/day`
-    );
+  e.preventDefault();
 
-  });
+  const user = {
+    name: document.getElementById("name").value,
+    age: document.getElementById("age").value,
+    weight: document.getElementById("weight").value,
+    height: document.getElementById("height").value,
+    goal: document.getElementById("goal").value
+  };
 
+  saveUser(user);
+  renderDashboard(user);
+});
+
+
+/* ======================
+   LOAD USER
+====================== */
+const user = getUser();
+if (user) renderDashboard(user);
+
+
+/* ======================
+   BMI
+====================== */
+function calculateBMI(weight, height) {
+  const weightKg = weight * 0.453592;
+  const heightM = height * 0.0254;
+  return (weightKg / (heightM * heightM)).toFixed(1);
 }
 
-// ======================
-// PROFILE + DASHBOARD
-// ======================
 
-const profileForm =
-  document.getElementById("profileForm");
+/* ======================
+   DASHBOARD (UPDATED)
+====================== */
+function renderDashboard(user) {
 
-const dashboardContent =
-  document.getElementById(
-    "dashboardContent"
+  const bmi = calculateBMI(
+    Number(user.weight),
+    Number(user.height)
   );
 
-function calculateBMI(
-  weight,
-  height
-){
-
-  const weightKg =
-    weight * 0.453592;
-
-  const heightM =
-    height * 0.0254;
-
-  return (
-    weightKg /
-    (heightM * heightM)
-  ).toFixed(1);
-
-}
-
-function renderDashboard(user){
-
-  const bmi =
-    calculateBMI(
-      Number(user.weight),
-      Number(user.height)
-    );
+  const macros = calculateDailyMacros(
+    user.goal,
+    Number(user.weight)
+  );
 
   let recommendation = "";
 
-  if(user.goal === "lose"){
+  switch (user.goal) {
 
-    if(bmi >= 30){
-
+    case "lose_fat":
       recommendation = `
-Weight Loss Program
+Fat Loss Program
+• Cardio 4x week
+• Walking daily
+• High protein diet
+• Calorie deficit
+      `;
+      break;
 
-• Walking 45 minutes
-• Cycling 30 minutes
-• Full Body Circuit
-• Daily Calorie Deficit
-• Drink More Water
-`;
-
-    } else {
-
+    case "lose_light":
       recommendation = `
-Fat Reduction Program
+Light Fat Loss
+• Walking
+• Yoga
+• Light cardio
+      `;
+      break;
 
-• Walking 30 minutes
-• Plank 3 Sets
-• Bodyweight Squats
-• Moderate Calorie Deficit
-• Stretching Routine
-`;
-
-    }
-
-  }
-
-  else if(user.goal === "gain"){
-
-    if(Number(user.age) < 30){
-
+    case "maintain":
       recommendation = `
-Muscle Growth Program
+Maintenance Program
+• Balanced training
+• Active lifestyle
+• Moderate diet
+      `;
+      break;
 
-• Bench Press
-• Squats
-• Deadlifts
-• High Protein Diet
-• Progressive Overload
-`;
+    case "lean_gain":
+      recommendation = `
+Lean Muscle Program
+• Strength training
+• High protein diet
+• Progressive overload
+      `;
+      break;
 
-    } else {
+    case "bulk":
+      recommendation = `
+Bulking Program
+• Heavy lifting
+• High calorie intake
+• Compound lifts
+      `;
+      break;
 
+    case "athletic":
+      recommendation = `
+Athletic Performance
+• Speed training
+• Agility drills
+• Endurance work
+      `;
+      break;
+
+    case "strength":
       recommendation = `
 Strength Program
+• Heavy lifts
+• Low reps
+• Power focus
+      `;
+      break;
 
-• Resistance Training
-• Dumbbell Press
-• Lunges
-• Recovery Focus
-• Protein Rich Meals
-`;
-
-    }
-
+    default:
+      recommendation = `
+General Fitness
+• Active lifestyle
+• Balanced training
+      `;
   }
 
-  else{
-
-    recommendation = `
-Maintenance Program
-
-• Walking
-• Push Ups
-• Stretching
-• Balanced Nutrition
-• Active Lifestyle
-`;
-
-  }
-
-  const calories =
-    Math.round(user.weight * 15);
-
-  dashboardContent.innerHTML = `
-
+  document.getElementById("dashboardContent").innerHTML = `
     <div class="dashboard-card">
 
-      <h3>
-        Welcome ${user.name}
-      </h3>
+      <h3>Welcome ${user.name}</h3>
 
-      <p>
-        <strong>Age:</strong>
-        ${user.age}
-      </p>
+      <p><strong>Age:</strong> ${user.age}</p>
+      <p><strong>Weight:</strong> ${user.weight} lbs</p>
+      <p><strong>Height:</strong> ${user.height} inches</p>
+      <p><strong>Goal:</strong> ${user.goal}</p>
 
-      <p>
-        <strong>Weight:</strong>
-        ${user.weight} lbs
-      </p>
+      <p><strong>BMI:</strong> ${bmi}</p>
 
-      <p>
-        <strong>Height:</strong>
-        ${user.height} inches
-      </p>
+      <p><strong>Calories:</strong> ${Math.round(macros.calories)}</p>
+      <p><strong>Protein:</strong> ${Math.round(macros.protein)} g</p>
+      <p><strong>Carbs:</strong> ${Math.round(macros.carbs)} g</p>
+      <p><strong>Fat:</strong> ${Math.round(macros.fat)} g</p>
 
-      <p>
-        <strong>Goal:</strong>
-        ${user.goal}
-      </p>
-
-      <p>
-        <strong>BMI:</strong>
-        ${bmi}
-      </p>
-
-      <p>
-        <strong>Recommended Calories:</strong>
-        ${calories}
-      </p>
-
-      <p>
-        <strong>Recommended Workout:</strong>
-      </p>
-
+      <p><strong>Workout Plan:</strong></p>
       <pre>${recommendation}</pre>
 
     </div>
-
   `;
-
 }
 
-if(profileForm){
 
-  profileForm.addEventListener(
-    "submit",
-    (e) => {
+/* ======================
+   MEALS
+====================== */
+document.getElementById("mealBtn")
+?.addEventListener("click", loadMeal);
 
-      e.preventDefault();
 
-      const user = {
+/* ======================
+   EXERCISES (READY FOR EXERCIDB)
+====================== */
 
-        name:
-          document.getElementById(
-            "name"
-          ).value,
+/* MAP GOAL → BODY PARTS */
+function mapGoalToBodyParts(goal) {
 
-        age:
-          document.getElementById(
-            "age"
-          ).value,
+  switch (goal) {
 
-        weight:
-          document.getElementById(
-            "weight"
-          ).value,
+    case "lose_fat":
+    case "lose_light":
+      return ["cardio", "waist", "back"];
 
-        height:
-          document.getElementById(
-            "height"
-          ).value,
+    case "maintain":
+      return ["chest", "legs", "back"];
 
-        goal:
-          document.getElementById(
-            "goal"
-          ).value
+    case "lean_gain":
+      return ["chest", "arms", "back"];
 
-      };
+    case "bulk":
+      return ["chest", "legs", "back"];
 
-      localStorage.setItem(
-        "fittrackUser",
-        JSON.stringify(user)
-      );
+    case "athletic":
+      return ["cardio", "full body"];
 
-      renderDashboard(user);
+    case "strength":
+      return ["back", "legs", "chest"];
 
-    }
-  );
-
-}
-
-const savedUser =
-  JSON.parse(
-    localStorage.getItem(
-      "fittrackUser"
-    )
-  );
-
-if(savedUser){
-  renderDashboard(savedUser);
-}
-
-// ======================
-// EXERCISE EXPLORER
-// ======================
-
-const sampleExercises = [
-
-  {
-    name:"Push Ups",
-    bodyPart:"Chest",
-    equipment:"Body Weight"
-  },
-
-  {
-    name:"Squats",
-    bodyPart:"Legs",
-    equipment:"Body Weight"
-  },
-
-  {
-    name:"Plank",
-    bodyPart:"Core",
-    equipment:"Body Weight"
-  },
-
-  {
-    name:"Dumbbell Curl",
-    bodyPart:"Biceps",
-    equipment:"Dumbbell"
-  },
-
-  {
-    name:"Lunges",
-    bodyPart:"Legs",
-    equipment:"Body Weight"
-  },
-
-  {
-    name:"Shoulder Press",
-    bodyPart:"Shoulders",
-    equipment:"Dumbbell"
+    default:
+      return ["chest", "legs"];
   }
-
-];
-
-const loadExercisesBtn =
-  document.getElementById(
-    "loadExercises"
-  );
-
-if(loadExercisesBtn){
-
-  loadExercisesBtn.addEventListener(
-    "click",
-    () => {
-
-      const container =
-        document.getElementById(
-          "exerciseContainer"
-        );
-
-      container.innerHTML = "";
-
-      sampleExercises.forEach(
-        exercise => {
-
-          container.innerHTML += `
-
-            <div class="card">
-
-              <h3>
-                ${exercise.name}
-              </h3>
-
-              <p>
-                <strong>Body Part:</strong>
-                ${exercise.bodyPart}
-              </p>
-
-              <p>
-                <strong>Equipment:</strong>
-                ${exercise.equipment}
-              </p>
-
-            </div>
-
-          `;
-
-        }
-      );
-
-    }
-  );
-
 }
 
-// ======================
-// CLOSE EXERCISES
-// ======================
 
-const closeExercisesBtn =
-  document.getElementById(
-    "closeExercises"
-  );
+/* LOAD EXERCISES */
+document.getElementById("loadExercises")
+?.addEventListener("click", async () => {
 
-if(closeExercisesBtn){
+  const container = document.getElementById("exerciseContainer");
+  const user = getUser();
 
-  closeExercisesBtn.addEventListener(
-    "click",
-    () => {
+  container.innerHTML = "<p>Loading exercises...</p>";
 
-      const container =
-        document.getElementById(
-          "exerciseContainer"
-        );
+  try {
 
-      container.innerHTML = `
-        <p>
-          Exercises hidden.
-        </p>
+    const bodyParts = mapGoalToBodyParts(user?.goal);
+
+    let all = [];
+
+    for (let part of bodyParts) {
+
+      const data = await getExercisesByBodyPart(part);
+
+      if (Array.isArray(data)) {
+        all = [...all, ...data];
+      }
+    }
+
+    container.innerHTML = "";
+
+    all.slice(0, 12).forEach(ex => {
+
+      container.innerHTML += `
+        <div class="card">
+
+          <h3>${ex.name}</h3>
+
+          <img src="${ex.gifUrl}" alt="${ex.name}" />
+
+          <p><strong>Target:</strong> ${ex.target}</p>
+          <p><strong>Equipment:</strong> ${ex.equipment}</p>
+
+        </div>
       `;
+    });
 
-    }
-  );
-
-}
-
-// ======================
-// MEAL PLANNER API
-// ======================
-
-const mealBtn =
-  document.getElementById(
-    "mealBtn"
-  );
-
-const mealContainer =
-  document.getElementById(
-    "mealContainer"
-  );
-
-if(mealBtn){
-
-  mealBtn.addEventListener(
-    "click",
-    loadMeal
-  );
-
-}
-
-async function loadMeal(){
-
-  mealContainer.innerHTML =
-    "<p>Loading meal...</p>";
-
-  try{
-
-    const response =
-      await fetch(
-        "https://www.themealdb.com/api/json/v1/1/random.php"
-      );
-
-    const data =
-      await response.json();
-
-    const meal =
-      data.meals[0];
-
-    mealContainer.innerHTML = `
-
-      <div class="meal-card">
-
-        <h3>
-          ${meal.strMeal}
-        </h3>
-
-        <img
-          src="${meal.strMealThumb}"
-          alt="${meal.strMeal}"
-        >
-
-        <p>
-          <strong>Category:</strong>
-          ${meal.strCategory}
-        </p>
-
-        <p>
-          <strong>Origin:</strong>
-          ${meal.strArea}
-        </p>
-
-        <p>
-          <strong>Instructions:</strong>
-          ${meal.strInstructions.substring(
-            0,
-            300
-          )}...
-        </p>
-
-      </div>
-
-    `;
-
-  }
-
-  catch(error){
-
-    mealContainer.innerHTML = `
-
-      <p>
-        Unable to load meal data.
-      </p>
-
-    `;
+  } catch (error) {
 
     console.error(error);
 
+    container.innerHTML = "<p>Unable to load exercises.</p>";
   }
+});
 
-}
+
+/* CLOSE EXERCISES */
+document.getElementById("closeExercises")
+?.addEventListener("click", () => {
+  document.getElementById("exerciseContainer").innerHTML =
+    "<p>Exercises hidden.</p>";
+});

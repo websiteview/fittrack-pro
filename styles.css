@@ -633,3 +633,95 @@ pre{
   }
 
 }
+
+/* =====================================
+   MEAL CARD UPGRADE (HERO + MODERNO UI)
+===================================== */
+
+/* HERO IMAGE SECTION */
+.meal-hero {
+  position: relative;
+  width: 100%;
+}
+
+.meal-hero img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* TITLE OVER IMAGE */
+.meal-title-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: white;
+}
+
+.meal-title-overlay h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+/* INFO SECTION INSIDE CARD */
+.meal-info {
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.meal-info p {
+  margin: 0.4rem 0;
+}
+
+/* MACROS BOX */
+.macros {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #F4F7FA;
+  border-radius: 12px;
+}
+
+/* TOGGLE BUTTON */
+.toggle-recipe {
+  margin-top: 1rem;
+  width: 100%;
+  background: linear-gradient(135deg, var(--midnight), var(--slate));
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-recipe:hover {
+  transform: translateY(-3px);
+}
+
+/* RECIPE COLLAPSE ANIMATION */
+.hidden-recipe {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+  margin-top: 0;
+}
+
+.hidden-recipe.show {
+  max-height: 600px;
+  opacity: 1;
+  margin-top: 1rem;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 10px;
+  object-fit: cover;
+}
