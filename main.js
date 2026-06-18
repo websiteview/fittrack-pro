@@ -1,4 +1,4 @@
-import { loadMeal } from "./controllers/mealController.js";
+import { loadMeal } from "./controllers/mealcontroller.js";
 import { saveUser, getUser } from "./utils/storage.js";
 import { calculateDailyMacros } from "./utils/macros.js";
 import { getExercisesByBodyPart } from "./services/exerciseService.js";
