@@ -462,3 +462,5 @@ document.getElementById("closeExercises")
   document.getElementById("exerciseContainer").innerHTML =
     "<p>Exercises hidden.</p>";
 });
+
+// GitHub Pages rebuild
